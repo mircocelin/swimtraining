@@ -127,9 +127,11 @@ function goToNextPool() {
     clearInterval(intervalRest);
   }
 
-  if (nPool > training.length - 2) {
+  if (nPool > training.length - 1) {
     stopStopWatch();
+    g.clear();
     showMenu();
+    return;
   }
 
   nPool++;
