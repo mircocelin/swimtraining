@@ -166,15 +166,15 @@ function handlePool(n) {
 }
 
 //-----------------------------------------------------------
-function startRestCounter(time) {
+function startRestCounter(timeRest) {
   function countDown() {
-    time--;
-    if (time == 0) {
+    timeRest--;
+    if (timeRest == 0) {
       isRestActive = false;
       clearInterval(intervalRest);
     }
 
-    drawRest(time);
+    drawRest(timeRest);
   }
   isRestActive = true;
   intervalRest = setInterval(countDown, 1000);
@@ -216,21 +216,28 @@ function drawPool(pool) {
     .drawString(pool[2].toUpperCase(), 13 + WIDTH / 2, ROW3);
 }
 
-function drawRest(time) {
+function drawRest(timeRest) {
   clearTopScreen();
   g.setColor("#ffffff")
     .setFont("6x8", 4)
     .setFontAlign(0, 0)
     .drawString("RIPOSO", WIDTH / 2, ROW1)
-    .drawString(time, WIDTH / 2, ROW2);
+    .drawString(timeRest, WIDTH / 2, ROW2);
 }
 
 function drawStopWatch(timeStopWatch) {
+  function toMinutes(t) {
+    let seconds = t % 60;
+    if (seconds < 10) seconds = "0" + seconds;
+
+    return (Math.floor(t / 60)) + ":" + seconds;
+  }
+
   clearBottomScreen();
   g.setColor("#ffffff")
     .setFont("6x8", 3)
     .setFontAlign(0, 0)
-    .drawString(timeStopWatch, WIDTH - 64, ROW4)
+    .drawString(toMinutes(timeStopWatch), WIDTH - 64, ROW4)
     .drawString(progPool + "/" + nTotPool, WIDTH - 164, ROW4);
 }
 
