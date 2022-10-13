@@ -2,9 +2,10 @@ const MAXTRAININGS = 10;
 const WIDTH = 240;
 const HEIGHT = 240;
 const ROW1 = HEIGHT - 210;
-const ROW2 = HEIGHT - 140;
+const ROW2 = HEIGHT - 146;
 const ROW3 = HEIGHT - 70;
 const ROW4 = HEIGHT - 14;
+const ROW_START = HEIGHT - 134;
 const TOP_ROW4 = ROW4 - 14;
 let training = []; //array of pools
 let nTotPool = 0; //number of toale pools
@@ -201,7 +202,7 @@ function drawStart() {
   g.setColor("#00ffff")
     .setFont("6x8", 4)
     .setFontAlign(0, 0)
-    .drawString("START", WIDTH / 2, ROW2);
+    .drawString("START", WIDTH / 2, ROW_START);
 }
 
 function drawPool(pool) {
@@ -210,7 +211,8 @@ function drawPool(pool) {
     .setFont("6x8", 4)
     .setFontAlign(0, 0)
     .drawString(pool[0], WIDTH / 2, ROW1)
-    .drawString(pool[1].toUpperCase(), WIDTH / 2, ROW2)
+    .drawString(pool[1].toUpperCase(), WIDTH / 2, ROW2);
+  g.setFont("6x8", 3)
     .drawString(pool[2].toUpperCase(), 13 + WIDTH / 2, ROW3);
 }
 
