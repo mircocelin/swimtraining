@@ -8,19 +8,19 @@ const ROW3 = HEIGHT - 70;
 const ROW4 = HEIGHT - 14;
 const ROW_START = HEIGHT - 134;
 const TOP_ROW4 = ROW4 - 14;
-let training = [],
-  nTotPool = 0,
-  nPool = 0,
-  progPool = 0,
-  isStopWatchActive = false,
-  isRestActive = false,
-  intervalRest = 0,
-  intervalStopWatch = 0,
-  intervalBtn1 = 0,
-  intervalBtn3 = 0,
-  fileNumber = 1,
-  timeStopWatch = 0,
-  fileName = "swimtraining";
+let training = [];
+let nTotPool = 0;
+let nPool = 0;
+let progPool = 0;
+let isStopWatchActive = false;
+let isRestActive = false;
+let intervalRest = 0;
+let intervalStopWatch = 0;
+let intervalBtn1 = 0;
+let intervalBtn3 = 0;
+let fileNumber = 1;
+let timeStopWatch = 0;
+let fileName = "swimtraining";
 
 function showMenu() {
   let menu = {
@@ -156,6 +156,9 @@ function goToPrevPool() {
 
 function handlePool(n) {
   let pool = training[nPool - 1];
+  storage
+    .open("t.csv", "a")
+    .write(toMinutes(timeStopWatch) + ";" + pool[0] + ";" + pool[1] + ";" + pool[2]);
 
   if (pool[0] == "r") {
     drawRest(pool[1]);
@@ -202,7 +205,7 @@ function toMinutes(t) {
 function stopStopWatch() {
   clearInterval(intervalStopWatch);
   storage
-    .open("t.csv", "w")
+    .open("t.csv", "a")
     .write(toMinutes(timeStopWatch) + ";" + fileName + fileNumber);
 }
 
