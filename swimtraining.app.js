@@ -1,3 +1,4 @@
+const storage = require("Storage");
 const MAXTRAININGS = 10;
 const WIDTH = 240;
 const HEIGHT = 240;
@@ -7,19 +8,21 @@ const ROW3 = HEIGHT - 70;
 const ROW4 = HEIGHT - 14;
 const ROW_START = HEIGHT - 134;
 const TOP_ROW4 = ROW4 - 14;
-let training = []; //array of pools
-let nTotPool = 0; //number of toale pools
-let nPool = 0; //current pool
-let progPool = 0; //progressive pool
+let training = [];
+let nTotPool = 0;
+let nPool = 0;
+let progPool = 0;
 let isStopWatchActive = false;
 let isRestActive = false;
 let intervalRest = 0;
 let intervalStopWatch = 0;
 let intervalBtn1 = 0;
 let intervalBtn3 = 0;
+let fileNumber = 1;
+let timeStopWatch = 0;
+let fileName = "swimtraining";
 
 function showMenu() {
-  let fileNumber = 1;
   let menu = {
     "": { title: "Swim Training" },
     "File No": {
@@ -74,10 +77,9 @@ function startTraining(fileNumber) {
       return newTrainFile;
     }
 
-    storage = require("Storage");
     storage
       .open("s.csv", "w")
-      .write(storage.read("swimtraining" + fileNumber + ".csv"));
+      .write(storage.read(fileName + fileNumber + ".csv"));
     let file = storage.open("s.csv", "r"),
       line = "",
       trainFile = [],
@@ -181,19 +183,27 @@ function startRestCounter(timeRest) {
 }
 
 function startStopWatch() {
-  let timeStopWatch = 0;
-
   function counter() {
     timeStopWatch++;
 
-    drawStopWatch(timeStopWatch);
+    drawStopWatch();
   }
 
   intervalStopWatch = setInterval(counter, 1000);
 }
 
+function toMinutes(t) {
+  let seconds = t % 60;
+  if (seconds < 10) seconds = "0" + seconds;
+
+  return (Math.floor(t / 60)) + ":" + seconds;
+}
+
 function stopStopWatch() {
   clearInterval(intervalStopWatch);
+  storage
+    .open("t.csv", "w")
+    .write(toMinutes(timeStopWatch) + ";" + fileName + fileNumber);
 }
 
 //---GRAFICA--------------------------------------------------
@@ -225,14 +235,7 @@ function drawRest(timeRest) {
     .drawString(timeRest, WIDTH / 2, ROW2);
 }
 
-function drawStopWatch(timeStopWatch) {
-  function toMinutes(t) {
-    let seconds = t % 60;
-    if (seconds < 10) seconds = "0" + seconds;
-
-    return (Math.floor(t / 60)) + ":" + seconds;
-  }
-
+function drawStopWatch() {
   clearBottomScreen();
   g.setColor("#ffffff")
     .setFont("6x8", 3)
