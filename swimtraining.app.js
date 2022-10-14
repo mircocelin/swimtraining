@@ -118,7 +118,29 @@ function setWatches() {
   );
 }
 
-//-----------------------------------------------------------
+function saveToFile() {
+  if (nPool > 0) {
+    storage
+      .open("t.csv", "a")
+      .write(
+        toMinutes(timeStopWatch) +
+          ";" +
+          training[nPool - 1][0] +
+          ";" +
+          training[nPool - 1][1] +
+          ";" +
+          training[nPool - 1][2]
+      );
+  } else {
+    storage
+      .open("t.csv", "w")
+      .write(
+        toMinutes(timeStopWatch) + ";START;" + fileName + fileNumber + "\n"
+      );
+  }
+}
+
+
 function goToNextPool() {
   if (!isStopWatchActive) {
     startStopWatch();
@@ -131,12 +153,13 @@ function goToNextPool() {
   }
 
   if (nPool > training.length - 1) {
-    stopStopWatch();
+    clearInterval(intervalStopWatch);
     g.clear();
     showMenu();
     return;
   }
 
+  saveToFile();
   nPool++;
   handlePool(1);
 }
@@ -156,9 +179,6 @@ function goToPrevPool() {
 
 function handlePool(n) {
   let pool = training[nPool - 1];
-  storage
-    .open("t.csv", "a")
-    .write(toMinutes(timeStopWatch) + ";" + pool[0] + ";" + pool[1] + ";" + pool[2]);
 
   if (pool[0] == "r") {
     drawRest(pool[1]);
@@ -170,7 +190,7 @@ function handlePool(n) {
   }
 }
 
-//-----------------------------------------------------------
+
 function startRestCounter(timeRest) {
   function countDown() {
     timeRest--;
@@ -199,17 +219,10 @@ function toMinutes(t) {
   let seconds = t % 60;
   if (seconds < 10) seconds = "0" + seconds;
 
-  return (Math.floor(t / 60)) + ":" + seconds;
+  return Math.floor(t / 60) + ":" + seconds;
 }
 
-function stopStopWatch() {
-  clearInterval(intervalStopWatch);
-  storage
-    .open("t.csv", "a")
-    .write(toMinutes(timeStopWatch) + ";" + fileName + fileNumber);
-}
 
-//---GRAFICA--------------------------------------------------
 function drawStart() {
   g.clear();
   g.setColor("#00ffff")
@@ -225,8 +238,7 @@ function drawPool(pool) {
     .setFontAlign(0, 0)
     .drawString(pool[0], WIDTH / 2, ROW1)
     .drawString(pool[1].toUpperCase(), WIDTH / 2, ROW2);
-  g.setFont("6x8", 3)
-    .drawString(pool[2].toUpperCase(), 13 + WIDTH / 2, ROW3);
+  g.setFont("6x8", 3).drawString(pool[2].toUpperCase(), 13 + WIDTH / 2, ROW3);
 }
 
 function drawRest(timeRest) {
