@@ -9,6 +9,7 @@ const ROW4 = HEIGHT - 14;
 const ROW_START = HEIGHT - 134;
 const TOP_ROW4 = ROW4 - 14;
 const fileName = "swimtraining";
+const timeFileName = `t_${Date.now()}.csv`;
 let fileNumber = 1;
 let training = [];
 let nTotPool = 0;
@@ -64,7 +65,7 @@ function startTraining(fileNumber) {
           subPool[2] = pool[2];
 
           for (let cicloPool = 0; cicloPool < pool[0]; cicloPool++) {
-            subPool[0] = (cicloPool + 1).toString() + "/" + pool[0];
+            subPool[0] = `${(cicloPool + 1).toString()}/${pool[0]}`;
             newTrainFile.push(subPool.slice(0));
             cicloNewTrainFile++;
           }
@@ -79,7 +80,7 @@ function startTraining(fileNumber) {
 
     storage
       .open("s.csv", "w")
-      .write(storage.read(fileName + fileNumber + ".csv"));
+      .write(storage.read(`${fileName + fileNumber}.csv`));
     let file = storage.open("s.csv", "r"),
       line = "",
       trainFile = [],
@@ -121,7 +122,7 @@ function setWatches() {
 function saveToFile() {
   if (nPool > 0) {
     storage
-      .open("t.csv", "a")
+      .open(timeFileName, "a")
       .write(
         toMinutes(timeStopWatch) +
           ";" +
@@ -133,13 +134,10 @@ function saveToFile() {
       );
   } else {
     storage
-      .open("t.csv", "w")
-      .write(
-        toMinutes(timeStopWatch) + ";START;" + fileName + fileNumber + "\n"
-      );
+      .open(timeFileName, "w")
+      .write(`${toMinutes(timeStopWatch)};START;${fileName}${fileNumber}\n`);
   }
 }
-
 
 function goToNextPool() {
   if (!isStopWatchActive) {
@@ -190,7 +188,6 @@ function handlePool(n) {
   }
 }
 
-
 function startRestCounter(timeRest) {
   function countDown() {
     timeRest--;
@@ -217,11 +214,10 @@ function startStopWatch() {
 
 function toMinutes(t) {
   let seconds = t % 60;
-  if (seconds < 10) seconds = "0" + seconds;
+  if (seconds < 10) seconds = `0${seconds}`;
 
-  return Math.floor(t / 60) + ":" + seconds;
+  return `${Math.floor(t / 60)}:${seconds}`;
 }
-
 
 function drawStart() {
   g.clear();
@@ -256,7 +252,7 @@ function drawStopWatch() {
     .setFont("6x8", 3)
     .setFontAlign(0, 0)
     .drawString(toMinutes(timeStopWatch), WIDTH - 64, ROW4)
-    .drawString(progPool + "/" + nTotPool, WIDTH - 164, ROW4);
+    .drawString(`${progPool}/${nTotPool}`, WIDTH - 164, ROW4);
 }
 
 function clearTopScreen() {
