@@ -150,6 +150,8 @@ function goToNextPool() {
     clearInterval(intervalRest);
   }
 
+  saveToFile();
+
   if (nPool > training.length - 1) {
     clearInterval(intervalStopWatch);
     g.clear();
@@ -157,7 +159,6 @@ function goToNextPool() {
     return;
   }
 
-  saveToFile();
   nPool++;
   handlePool(1);
 }
