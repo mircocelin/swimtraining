@@ -154,6 +154,7 @@ function goToNextPool() {
 
   if (nPool > training.length - 1) {
     clearInterval(intervalStopWatch);
+    Bangle.setLCDTimeout(10);
     g.clear();
     showMenu();
     return;
@@ -209,7 +210,8 @@ function startStopWatch() {
 
     drawStopWatch();
   }
-
+  Bangle.setLCDPower(1);
+  Bangle.setLCDTimeout(0);
   intervalStopWatch = setInterval(counter, 1000);
 }
 
@@ -264,5 +266,4 @@ function clearBottomScreen() {
   g.clearRect(0, ROW4 - 22, WIDTH, HEIGHT);
 }
 
-Bangle.setLCDPower(1);
 showMenu();
