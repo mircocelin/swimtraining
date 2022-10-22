@@ -101,6 +101,16 @@ function startTraining(fileNumber) {
   setWatches();
 }
 
+function stopTraining() {
+  clearInterval(intervalStopWatch);
+  clearWatch(intervalBtn1);
+  clearWatch(intervalBtn3);
+  Bangle.setLCDTimeout(10);
+  g.clear();
+
+  return showMenu();
+}
+
 function setWatches() {
   intervalBtn1 = setWatch(
     () => {
@@ -152,13 +162,7 @@ function goToNextPool() {
 
   saveToFile();
 
-  if (nPool > training.length - 1) {
-    clearInterval(intervalStopWatch);
-    Bangle.setLCDTimeout(10);
-    g.clear();
-    showMenu();
-    return;
-  }
+  if (nPool > training.length - 1) stopTraining();
 
   nPool++;
   handlePool(1);
