@@ -1,6 +1,7 @@
 {
-  "id": "swimtraining",
+  "id": "swimtra",
   "name": "Swim training",
+  "shortName": "Swim training",
   "version": "0.01",
   "description": "Visualize swim training session. Press btn1 to go to next pool",
   "icon": "swimtraining.png",
