@@ -9,7 +9,6 @@
   "supports": ["BANGLEJS"],
   "readme": "README.md",
   "storage": [
-    {"name":"swimtraining.app.js","url":"swimtraining.js"},
-    {"name":"swimtraining.png","url":"swimtraining.png"}
+    {"name":"swimtraining.app.js","url":"app.js"}
   ]
 }
