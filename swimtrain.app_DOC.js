@@ -21,6 +21,7 @@ let isRestActive = false;
 let intervalRest = 0;
 let intervalStopWatch = 0;
 let intervalBtn1 = 0;
+let intervalBtn3 = 0;
 
 function showMenu() {
   let menu = {
@@ -103,6 +104,7 @@ function startTraining(fileNumber) {
 function stopTraining() {
   clearInterval(intervalStopWatch);
   clearWatch(intervalBtn1);
+  clearWatch(intervalBtn3);
   Bangle.setLCDTimeout(10);
   g.clear();
 
@@ -115,6 +117,14 @@ function setWatches() {
       goToNextPool();
     },
     BTN1,
+    { repeat: true }
+  );
+
+  intervalBtn3 = setWatch(
+    () => {
+      goToPrevPool();
+    },
+    BTN3,
     { repeat: true }
   );
 }
@@ -156,6 +166,19 @@ function goToNextPool() {
 
   nPool++;
   handlePool(1);
+}
+
+function goToPrevPool() {
+  if (nPool > 0) {
+    if (isRestActive) {
+      isRestActive = false;
+      clearInterval(intervalRest);
+    }
+
+    if (nPool > 1) nPool--;
+
+    handlePool(0);
+  }
 }
 
 function handlePool(n) {
