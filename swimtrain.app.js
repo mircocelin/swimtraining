@@ -10,9 +10,10 @@ let ROW4 = HEIGHT - 14;
 let ROW_START = HEIGHT - 134;
 let WIDTHSTOPW = WIDTH - 64;
 let WIDTHNPOOL = WIDTH - 164;
+let WIDTHROW3 = 13 + WIDTH / 2;
 let FONTSIZE = 4;
 let FONTCOLOR = "#ffffff";
-const TOP_ROW4 = ROW4 - 14;
+let TOP_ROW4 = ROW4 - 14;
 const fileName = "swimtraining";
 const timeFileName = `t_${Date.now()}.csv`;
 let fileNumber = 1;
@@ -36,9 +37,11 @@ function showMenu() {
     ROW2 = HEIGHT - 102;
     ROW3 = HEIGHT - 42;
     ROW4 = HEIGHT - 12;
-    ROW_START = HEIGHT - 104;
+    ROW_START = HEIGHT - 90;
     WIDTHSTOPW = WIDTH - 34;
     WIDTHNPOOL = WIDTH - 134;
+    WIDTHROW3 = 4 + WIDTH / 2;
+    TOP_ROW4 = ROW4 - 24;
     FONTSIZE = 3;
     FONTCOLOR = "#000000";
   }
@@ -248,7 +251,7 @@ function toMinutes(t) {
 
 function drawStart() {
   g.clear();
-  g.setColor("#000fff")
+  g.setColor(FONTCOLOR)
     .setFont("6x8", FONTSIZE)
     .setFontAlign(0, 0)
     .drawString("START", WIDTH / 2, ROW_START);
@@ -261,7 +264,11 @@ function drawPool(pool) {
     .setFontAlign(0, 0)
     .drawString(pool[0], WIDTH / 2, ROW1)
     .drawString(pool[1].toUpperCase(), WIDTH / 2, ROW2);
-  g.setFont("6x8", 3).drawString(pool[2].toUpperCase(), 13 + WIDTH / 2, ROW3);
+  g.setFont("6x8", FONTSIZE - 1).drawString(
+    pool[2].toUpperCase(),
+    WIDTHROW3,
+    ROW3
+  );
 }
 
 function drawRest(timeRest) {
