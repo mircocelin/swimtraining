@@ -1,12 +1,17 @@
 const storage = require("Storage");
+const BANGLE_V = 2;
 const MAXTRAININGS = 10;
-const WIDTH = 240;
-const HEIGHT = 240;
-const ROW1 = HEIGHT - 210;
-const ROW2 = HEIGHT - 146;
-const ROW3 = HEIGHT - 70;
-const ROW4 = HEIGHT - 14;
-const ROW_START = HEIGHT - 134;
+let WIDTH = 240;
+let HEIGHT = 240;
+let ROW1 = HEIGHT - 210;
+let ROW2 = HEIGHT - 146;
+let ROW3 = HEIGHT - 70;
+let ROW4 = HEIGHT - 14;
+let ROW_START = HEIGHT - 134;
+let WIDTHSTOPW = WIDTH - 64;
+let WIDTHNPOOL = WIDTH - 164;
+let FONTSIZE = 4;
+let FONTCOLOR = "#ffffff";
 const TOP_ROW4 = ROW4 - 14;
 const fileName = "swimtraining";
 const timeFileName = `t_${Date.now()}.csv`;
@@ -21,8 +26,22 @@ let isRestActive = false;
 let intervalRest = 0;
 let intervalStopWatch = 0;
 let intervalBtn1 = 0;
+let intervalBtn3 = 0;
 
 function showMenu() {
+  if (BANGLE_V == 2) {
+    WIDTH = 176;
+    HEIGHT = 176;
+    ROW1 = HEIGHT - 146;
+    ROW2 = HEIGHT - 102;
+    ROW3 = HEIGHT - 42;
+    ROW4 = HEIGHT - 12;
+    ROW_START = HEIGHT - 104;
+    WIDTHSTOPW = WIDTH - 34;
+    WIDTHNPOOL = WIDTH - 134;
+    FONTSIZE = 3;
+    FONTCOLOR = "#000000";
+  }
   let menu = {
     "": { title: "Swim Training" },
     "File No": {
@@ -103,6 +122,7 @@ function startTraining(fileNumber) {
 function stopTraining() {
   clearInterval(intervalStopWatch);
   clearWatch(intervalBtn1);
+  if (BANGLE_V == 1) clearWatch(intervalBtn3);
   Bangle.setLCDTimeout(10);
   g.clear();
 
@@ -117,6 +137,16 @@ function setWatches() {
     BTN1,
     { repeat: true }
   );
+
+  if (BANGLE_V == 1) {
+    intervalBtn3 = setWatch(
+      () => {
+        goToPrevPool();
+      },
+      BTN3,
+      { repeat: true }
+    );
+  }
 }
 
 function saveToFile() {
@@ -156,6 +186,19 @@ function goToNextPool() {
 
   nPool++;
   handlePool(1);
+}
+
+function goToPrevPool() {
+  if (nPool > 0) {
+    if (isRestActive) {
+      isRestActive = false;
+      clearInterval(intervalRest);
+    }
+
+    if (nPool > 1) nPool--;
+
+    handlePool(0);
+  }
 }
 
 function handlePool(n) {
@@ -205,16 +248,16 @@ function toMinutes(t) {
 
 function drawStart() {
   g.clear();
-  g.setColor("#00ffff")
-    .setFont("6x8", 4)
+  g.setColor("#000fff")
+    .setFont("6x8", FONTSIZE)
     .setFontAlign(0, 0)
     .drawString("START", WIDTH / 2, ROW_START);
 }
 
 function drawPool(pool) {
   clearTopScreen();
-  g.setColor("#ffffff")
-    .setFont("6x8", 4)
+  g.setColor(FONTCOLOR)
+    .setFont("6x8", FONTSIZE)
     .setFontAlign(0, 0)
     .drawString(pool[0], WIDTH / 2, ROW1)
     .drawString(pool[1].toUpperCase(), WIDTH / 2, ROW2);
@@ -223,8 +266,8 @@ function drawPool(pool) {
 
 function drawRest(timeRest) {
   clearTopScreen();
-  g.setColor("#ffffff")
-    .setFont("6x8", 4)
+  g.setColor(FONTCOLOR)
+    .setFont("6x8", FONTSIZE)
     .setFontAlign(0, 0)
     .drawString("RIPOSO", WIDTH / 2, ROW1)
     .drawString(timeRest, WIDTH / 2, ROW2);
@@ -232,11 +275,11 @@ function drawRest(timeRest) {
 
 function drawStopWatch() {
   clearBottomScreen();
-  g.setColor("#ffffff")
-    .setFont("6x8", 3)
+  g.setColor(FONTCOLOR)
+    .setFont("6x8", FONTSIZE - 1)
     .setFontAlign(0, 0)
-    .drawString(toMinutes(timeStopWatch), WIDTH - 64, ROW4)
-    .drawString(`${progPool}/${nTotPool}`, WIDTH - 164, ROW4);
+    .drawString(toMinutes(timeStopWatch), WIDTHSTOPW, ROW4)
+    .drawString(`${progPool}/${nTotPool}`, WIDTHNPOOL, ROW4);
 }
 
 function clearTopScreen() {
