@@ -1,35 +1,48 @@
 const storage = require("Storage");
 const BANGLE_V = 2;
 const MAXTRAININGS = 10;
-let WIDTH = 240;
-let HEIGHT = 240;
-let ROW1 = HEIGHT - 210;
-let ROW2 = HEIGHT - 146;
-let ROW3 = HEIGHT - 70;
-let ROW4 = HEIGHT - 14;
-let ROW_START = HEIGHT - 134;
-let WIDTHSTOPW = WIDTH - 64;
-let WIDTHNPOOL = WIDTH - 164;
-let WIDTHROW3 = 13 + WIDTH / 2;
-let FONTSIZE = 4;
-let FONTCOLOR = "#ffffff";
-let TOP_ROW4 = ROW4 - 14;
 const fileName = "swimtraining";
 const timeFileName = `t_${Date.now()}.csv`;
-let fileNumber = 1;
-let training = [];
-let nTotPool = 0;
-let nPool = 0;
-let progPool = 0;
-let timeStopWatch = 0;
-let isStopWatchActive = false;
-let isRestActive = false;
-let intervalRest = 0;
-let intervalStopWatch = 0;
-let intervalBtn1 = 0;
-let intervalBtn3 = 0;
+let WIDTH;
+let HEIGHT;
+let ROW1;
+let ROW2;
+let ROW3;
+let ROW4;
+let ROW_START;
+let WIDTHSTOPW;
+let WIDTHNPOOL;
+let WIDTHROW3;
+let FONTSIZE;
+let FONTCOLOR;
+let TOP_ROW4;
+let fileNumber;
+let training;
+let nTotPool;
+let nPool;
+let progPool;
+let timeStopWatch;
+let isStopWatchActive;
+let isRestActive;
+let intervalRest;
+let intervalStopWatch;
+let intervalBtn1;
+let intervalBtn3;
 
 function showMenu() {
+  WIDTH = 240;
+  HEIGHT = 240;
+  ROW1 = HEIGHT - 210;
+  ROW2 = HEIGHT - 146;
+  ROW3 = HEIGHT - 70;
+  ROW4 = HEIGHT - 14;
+  ROW_START = HEIGHT - 134;
+  WIDTHSTOPW = WIDTH - 64;
+  WIDTHNPOOL = WIDTH - 164;
+  WIDTHROW3 = 13 + WIDTH / 2;
+  TOP_ROW4 = ROW4 - 14;
+  FONTSIZE = 4;
+  FONTCOLOR = "#ffffff";
   if (BANGLE_V == 2) {
     WIDTH = 176;
     HEIGHT = 176;
@@ -45,6 +58,18 @@ function showMenu() {
     FONTSIZE = 3;
     FONTCOLOR = "#000000";
   }
+  fileNumber = 1;
+  training = [];
+  nTotPool = 0;
+  nPool = 0;
+  progPool = 0;
+  timeStopWatch = 0;
+  isStopWatchActive = false;
+  isRestActive = false;
+  intervalRest = 0;
+  intervalStopWatch = 0;
+  intervalBtn1 = 0;
+  intervalBtn3 = 0;
   let menu = {
     "": { title: "Swim Training" },
     "File No": {
@@ -186,9 +211,10 @@ function goToNextPool() {
   saveToFile();
 
   if (nPool > training.length - 1) stopTraining();
-
-  nPool++;
-  handlePool(1);
+  else {
+    nPool++;
+    handlePool(1);
+  }
 }
 
 function goToPrevPool() {
