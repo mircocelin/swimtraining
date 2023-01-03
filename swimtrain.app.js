@@ -1,7 +1,7 @@
 const storage = require("Storage");
 const BANGLE_V = 2;
 const MAXTRAININGS = 10;
-const fileName = "swimtraining";
+const fileName = "swimtrain";
 const timeFileName = `t_${Date.now()}.csv`;
 let WIDTH;
 let HEIGHT;

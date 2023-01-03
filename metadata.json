@@ -4,12 +4,12 @@
   "shortName": "Swim training",
   "version": "0.01",
   "description": "Visualize swim training session. Press btn1 to go to next pool",
-  "icon": "swimtraining.png",
+  "icon": "swimtrain.png",
   "type": "app",
   "tags": "outdoors",
   "supports": ["BANGLEJS"],
   "readme": "README.md",
   "storage": [
-    {"name":"swimtraining.app.js","url":"app.js"}
+    {"name":"swimtrain.app.js","url":"app.js"}
   ]
 }
